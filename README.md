@@ -1,1 +1,0 @@
-# Repositorio-para-practicas-de-SO3
