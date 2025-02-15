@@ -1,0 +1,93 @@
+Comandos de practica 1 laboratorio 3
+
+sudo nano /etc/default/grub
+
+sudo update-grub
+
+reboot
+
+reboot+shift para abrir el menu de grub
+
+advanced options for ubuntu
+
+recovery mode
+
+root
+
+enter
+
+mount
+
+passwd usuario
+
+reboot
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos de practica 2 laboratorio 3
+
+sudo nano script1.sh
+
+#!/bin/bash
+
+ORIGEN="/home/enrique20240798/"
+FECHA=$(date +"%d-%m-%Y:%H:%M")
+copia_enrique="backup-$FECHA.tar.gz"
+tar -czvf "$copia_enrique" "$ORIGEN"
+echo "Backup realizado con exito: $copia_enrique"
+
+sudo chmod +x scriptdepractica.sh
+
+./scriptdepractica.sh
+
+sudo nano scriptdepractica2.sh
+
+#!/bin/bash
+
+echo "Introduce el nombre del archivo"
+read NOMBRE_ARCHIVO
+RUTA_ARCHIVO="/home/enrique20240798/Desktop/$NOMBRE_ARCHIVO.txt"
+ifconfig > "$RUTA_ARCHIVO"
+echo "El resultado de ifconfig ha sido guardado en: $RUTA_ARCHIVO"
+
+sudo chmod +x scriptdepractica2.sh
+
+./scriptdepractica2.sh
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos de practica 3 laboratorio 3
+
+sudo apt install openssh-server
+
+sudo systemctl status ssh
+
+sudo systemctl enable ss (en caso de que no este activo al iniciarlo)
+
+ssh usuario@ip
+
+mkdir -p ~/.ssh
+
+cd ~/.ssh
+
+touch authorized_keys
+
+chmod 600 al archivo y a la carpeta
+
+exit
+
+ssh-keygen
+
+Copiar ruta generada por el commando anterior y pegarla en el explorador de archivos
+
+Abrir el doc Publisher con el notepd
+
+copier la clave generada que esta dentro el Publisher
+
+Entrar via ssh
+
+cd ~/.ssh
+
+sudo nano authorized_keys
+
+Pegar la llave que copiamos anteriormente
