@@ -1,0 +1,153 @@
+Comandos practica 1 laboratorio 4
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>(nombre de la pagina)</title>
+    </head>
+    <body>
+(Cuerpo o texto que tendra la pagina)
+    </body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>(nombre de la pagina)</title>
+    </head>
+    <body>
+        <p>(nombre)</p>
+        <p>(matricula)</p>
+        <p>(materia)</p>
+    </body>
+</html>
+
+sudo apt install apache2
+cd /var/www/html/
+ls
+ifconfig
+sudo mkdir prueba.com
+cd prueba.com
+sudo nano index.html
+cd
+cd /etc/apache2/sites-available
+ls
+sudo cp 000-default.conf prueba.conf
+sudo nano prueba.conf
+DocumentRoot /var/www/html/prueba.com/
+cd
+sudo a2ensite prueba.conf
+sudo a2dissite 000-default.conf
+sudo systemctl reload apache2
+
+cd /var/www/html
+ls
+sudo mkdir misdatos.com
+cd misdatos.com
+sudo nano index.html
+cd
+cd /etc/apache2/sites-available/
+ls
+sudo cp prueba.conf misdatos.conf
+sudo nano misdatos.conf
+DocumentRoot /var/www/html/misdatos.com/
+cd ..
+ls
+sudo nano ports.conf
+Listen 8080
+sudo a2ensite misdatos.conf
+systemctl reload apache2
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 2 laboratorio 4
+
+sudo apt install postfix -y
+sudo dpkg-reconfigure postfix
+sudo systemctl restart postfix
+sudo apt install mailutils -y
+sudo nano /etc/postfix/sasl/sasl_passwd
+[smtp.gmail.com]:587 (correo):(contraseña sin espacios)
+sudo postmap /etc/postfix/sasl/sasl_passwd
+ls /etc/postfix/sasl/
+sudo chmod 600 /etc/postfix/sasl/sasl_passwd
+sudo chmod 600 /etc/postfix/sasl/sasl_passwd.db
+sudo nano /etc/postfix/main.conf 
+
+pega la siguiente informacion dentro del archivo de configuracion de postfix:
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous
+smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd
+smtp_tls_security_level = encrypt
+smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
+
+sudo systemctl restart postfix
+sudo systemctl enable postfix
+sudo systemctl start postfix
+echo "Cuerpo del correo" | mail -s "Asunto del correo" (Correo de destino)
+sudo postqueue -p
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 3 laboratorio 4
+
+sudo apt install cups
+
+sudo apt install cups-pdf
+
+sudo systemctl status cups
+
+cupsctl --remote-admin --remote-any --share-printers
+
+sudo ufw allow 631/tcp
+
+sudo systemctl restart ufw
+
+sudo useradd -g lpadmin cupsadmin
+
+sudo passwd cupsadmin
+
+Ir al navegador y poner la ip del servidor con el puerto 631
+
+Ir a adminsitracion
+
+Añadir impresora
+
+Ingresamos con cupsadmin y la contraseña
+
+Selecciona cups_pdf pdf printer
+
+Nombre que desea y compartir imoresora
+
+Marca generic
+
+cups pdf printer no options
+
+Impresoras
+
+Click a la impresora que se creo
+
+Copiamos la url de la impresora
+
+Windows + u
+
+Bluethoot y dispositivos
+
+Impresora y escaneres
+
+Agregar una impresora o scanner
+
+Seleccionar una impresora compartida por nombre
+
+Pegar la url
+
+Cambiar el https por http
+
+Regresar al navegador e ir a trabajos
+
+Mostrar todos los trabajos
+
+Abrir Word para enviar un documeto de prueba
+
+Seleccionar la imresora e imprimir
