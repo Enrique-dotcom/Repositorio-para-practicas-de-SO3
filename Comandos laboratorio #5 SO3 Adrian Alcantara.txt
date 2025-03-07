@@ -1,0 +1,232 @@
+Comandos practica 1 laboratorio 5
+
+ssh-keygen
+cd rutadondeseguardolallave
+ls
+ssh-copy-id usuario@ipdelusuario
+ssh usuario@ipdelusuario
+exit
+cd Desktop
+mkdir nombrecarpeta
+cd nombrecarpeta
+touch nombrearchivo{1..100}.txt
+ls
+rsync -avz /home/ubuntu/Desktop/nombrecarpeta usuario@ipdelusuario:/home/enrique20240798/Desktop/
+
+Copia el comando escrito anteriormente 
+cd
+sudo nano nombrescript.sh
+pega el comando copiado
+sudo chmod +x nombrescript.sh
+crontab -e
+* * * * * /bin/bash /home/enrique20240798/nombrescript.sh
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 2 laboratorio 5
+
+sudo apt install pacemaker corosync -y
+sudo nano /etc/corosync/corosync.conf
+Copiar y pegar esto:
+
+!!!!NODO 1!!!!
+# Please read the corosync.conf.5 manual page
+system {
+        allow_knet_handle_fallback: yes
+}
+
+totem {
+        version: 2
+        secauth: off
+        cluster_name: debian
+        transport: udp
+        crypto_cipher: none
+        crypto_hash: none
+}
+
+logging {
+        fileline: off
+        to_stderr: yes
+        to_logfile: yes
+        logfile: /var/log/corosync/corosync.log
+        to_syslog: yes
+        debug: off
+        logger_subsys {
+                subsys: QUORUM
+                debug: off
+        }
+}
+
+quorum {
+        provider: corosync_votequorum
+        two_node: 2
+}
+
+nodelist {
+        node {
+                ring0_addr: 10.10.10.10
+                name: enrique20240798-virtual-machine
+                nodeid: 1
+        }
+
+        node {
+                ring0_addr: 10.10.10.5
+                name: enrique20240798-virtual-machine
+                nodeid: 2
+        }
+}
+--------------------------------------------------------------
+!!!!NODO 2!!!!
+
+# Please read the corosync.conf.5 manual page
+system {
+        allow_knet_handle_fallback: yes
+}
+
+totem {
+        version: 2
+        secauth: off
+        cluster_name: debian
+        transport: udp
+        crypto_cipher: none
+        crypto_hash: none
+}
+
+logging {
+        fileline: off
+        to_stderr: yes
+        to_logfile: yes
+        logfile: /var/log/corosync/corosync.log
+        to_syslog: yes
+        debug: off
+        logger_subsys {
+                subsys: QUORUM
+                debug: off
+        }
+}
+
+quorum {
+        provider: corosync_votequorum
+        two_node: 2
+}
+
+nodelist {
+        node {
+                ring0_addr: 10.10.10.5
+                name: enrique20240798-virtual-machine 
+                nodeid: 2  
+        }
+
+        node {
+                ring0_addr: 10.10.10.10
+                name: enrique20240798-virtual-machine
+                nodeid: 1 
+        }
+}
+----------------------------------------------------------
+en ambos servidores
+sudo systemctl start corosync
+sudo systemctl enable corosync
+sudo systemctl restart corosync
+sudo systemctl start pacemaker
+sudo systemctl enable pacemaker
+sudo systemctl restart pacemaker
+
+sudo crm status
+sudo crm configure
+pegar lo siguiente:
+primitive FloatingIP ocf:heartbeat:IPaddr2 \
+    params ip=direccion ip cidr_netmask=mascara \
+    op start timeout=20 \
+    op stop timeout=20 \
+    op monitor interval=10 timeout=5
+
+Luego pegamos lo siguiente:
+property stonith-enabled=false
+commit
+exit
+sudo crm status
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 3 laboratorio 5
+
+sudo apt install apache2
+
+cd /var/www/html
+
+sudo mkdir holamundo.com
+
+cd holamundo.com
+
+sudo nano index.html
+
+pegar esto
+----------------------------------------
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>titulo</title>
+    </head>
+    <body>
+        <p>cuerpo</p>
+    </body>
+</html>
+
+-------------------------------------------
+en el server 2 hacemos lo mismo
+
+solo que cambiando server 1 por server 2
+
+instalar keepalived en las dos maquinas
+
+sudo pt install keepalived -y
+
+sudo nano /etc/keepalived/keepalived.conf
+
+pegamos esto:
+vrrp_instance VI_1 {
+    state MASTER
+    interface ens33
+    virtual_router_id 51
+    priority 100  
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass contraseña
+    }
+    virtual_ipaddress {
+        direccion ip
+    }
+}
+------------------------------------------
+
+en la maquina 2
+
+pegamos esto
+
+vrrp_instance VI_1 {
+    state BACKUP
+    interface ens33
+    virtual_router_id 51
+    priority 90  
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass contraseña
+    }
+    virtual_ipaddress {
+        direccion ip
+    }
+}
+
+-------------------------------------------
+en las dos maquinas
+sudo systemctl restart keepalived
+sudo systemctl enable keepalived
+sudo systemctl start keepalived
+
+ip a
+
+en el navegador ponemos la ip flotante
