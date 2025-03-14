@@ -1,0 +1,176 @@
+Comandos practica 1 laboratorio 6
+
+sudo apt install gnupg2 -y
+
+mkdir 
+
+cd 
+
+sudo nano archivo.txt
+
+cat archivo.txt
+
+sudo gpg2 --symmetric archivo.txt
+
+ls
+
+cat archivo.txt.gpg
+
+sudo rm archivo.txt
+
+sudo gpg2 --decrypt archivo.txt.gpg 
+
+sudo gpg -d archivo.txt
+
+sudo gpg2 --output goku.txt.gpg --decrypt archivo.txt.gpg
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 2 laboratorio 6
+
+(iptables)
+
+sudo iptables -L --line-numbers
+
+Para bloquear
+
+sudo ip tables -A INPUT -p tcp --dport 80 -j DROP
+
+sudo ip tables -A INPUT -p tcp --dport 21 -j DROP
+
+sudo ip tables -A INPUT -p tcp --dport 22 -j DROP
+
+sudo iptables -L --line-numbers
+
+para habiitar
+
+sudo ip tables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+sudo ip tables -A INPUT -p tcp --dport 21 -j ACCEPT
+
+sudo ip tables -A INPUT -p tcp --dport 22 -j ACCEPT
+
+para quitar reglas
+
+sudo iptables -D INPUT 1
+
+--------------------------------------------
+
+(UFW)
+
+sudo ufw status verbose
+
+sudo ufw enable
+
+sudo ufw deny 80/tcp
+
+sudo ufw deny 21/tcp
+
+sudo ufw deny 22/tcp
+
+sudo ufw status numbered
+
+sudo ufw allow 80/tcp
+
+sudo ufw deny 21/tcp
+
+sudo ufw deny 22/tcp
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+Comandos practica 3 laboratorio 6
+
+sudo apt install snort -y
+
+ponemos el rango de ip /24 en la promp
+
+sudo nano /etc/snort/snort.conf
+---------------------------------------------
+editamos el ip var lo editamos que quede asi:
+
+ipvar HOME_NET rango que pusimos en la promp
+
+bajamos hasta que hayan muchos includes
+
+ponemos 
+
+include $RULE_PATH/local.rules
+
+--------------------------------------------
+
+vamos agregar reglas
+
+sudo nano /etc/snort/rules/local.rules
+
+agregamos lo siguiente:
+
+--------------------------------------------
+
+alert icmp any any -> $HOME_NET any (msg:"Trafico ICMP detectado"; sid: 180001; rev:1;)
+alert tcp any any -> $HOME_NET 21 (msg:"Trafico FTP detectado"; sid: 100002; rev: 1;)
+alert tcp any any -> $HOME_NET 22 (msg:"Trafico SSH detectado"; sid: 108003; rev:1;)
+alert tcp any any -> $HOME_NET 80 (msg: "Trafico HTTP detectado"; sid: 100004; rev: 1;)
+
+--------------------------------------------
+
+Vamos a probar la configuracion
+
+sudo snort -T -i ens33 -c /etc/snort/snort.conf
+
+--------------------------------------------
+
+abrimos otra terminal
+
+sudo tail -f /var/log/snort/snort.alert.fast
+
+--------------------------------------------
+
+Volmemos a la terminal de antes
+
+activamos el snort
+
+sudo snort -i ens33 -c /etc/snort/snort.conf
+
+vamos a la otra maquina
+
+le hacemos ping
+
+ping ip
+
+entramos via ssh
+
+ssh usuario@ip
+
+entramos via telnet por el puerto 21
+
+telnet ip 21
+
+para el http
+
+curl http://ip
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 3 laboratorio 6
+
+sudo apt update && sudo apt install libpam-google-authenticator -y
+
+google-authenticator
+
+sudo nano /etc/pam.d/sshd
+
+al final escribir:
+
+auth required pam_google_authenticator.so
+
+sudo nano /etc/ssh/sshd_config
+
+UsePAM yes
+
+KbdinteractiveAuthentication yes
+
+sudo systemctl restart sshd.service
+
+sudo systemctl restart sshd
+
+ssh usuario@ip
+
