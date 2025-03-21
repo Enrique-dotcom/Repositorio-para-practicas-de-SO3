@@ -1,0 +1,255 @@
+Comandos practica 1 laboratorio 7
+
+(Maquina Host)
+
+sudo apt install nfs-kernel-server -y
+
+sudo mkdir /mnt/OS3
+
+sudo touch archivo{1..100}.txt
+
+sudo chown nobody:nogroup /mnt/OS3
+
+sudo chmod 755 /mnt/OS3
+
+cd /mnt/OS3
+
+sudo touch adrian{1..100}.txt
+
+sudo nano /etc/exports
+
+pegar:
+
+/mnt/OS3 ip cliente(rw,sync,no_subtree_check)
+
+sudo exportfs -a
+
+sudo systemctl restart nfs-kernel-server
+
+-------------------------------------------------
+
+(Maquina cliente)
+
+sudo apt install nfs-common
+
+sudo mkdir /var/OS3
+
+sudo nano /etc/fstab
+
+pegar:
+
+ip servidor:/mnt/OS3 /var/OS3 nfs defaults 0 0
+
+sudo mount ip servidor:/mnt/OS3
+
+sudo reboot
+
+cd /var/OS3
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 2 laboratorio 7
+
+Sudo apt install samba -y
+
+Sudo systemctl enable --now smbd
+
+sudo systemctl start smbd
+
+sudo mkdir -p /srv/samba_share
+
+cd /srv/samba_share
+
+sudo touch Adrian{1..100}.txt
+
+sudo groupadd smbgroup
+
+sudo useradd -M -s /sbin/nologin sambauser
+
+sudo usermod -aG smbgroup sambauser
+
+sudo smbpasswd -a sambauser
+
+sudo chown -R sambauser:smbgroup  /srv/samba_share/
+
+sudo chmod 770 /srv/samba_share/
+
+sudo nano /etc/samba/smb.conf
+
+pegar:
+
+[share]
+   path = /srv/samba_share
+   read only = no
+   browsable = yes
+   valid users = sambauser
+   create mask = 0660
+   directory mask = 0770
+   guest ok = no
+   writetable = yes
+
+sudo systemctl restart smbd
+
+-------------------------------------------------
+
+Windows
+
+Abre el explorador de archivos
+
+En este equipo sale click derecho
+
+Conectar nueva red
+
+La unidad que prefieras
+
+\\192.168.0.180\share
+
+En carpeta la carpeta compartida de samba
+
+Usuario y contraseña de samba
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 3 laboratorio 7 
+
+hostnamectl set-hostname so3.inet
+
+hostname -f
+
+sudo nano /etc/hosts
+
+192.168.0.180 SO3-DOM SO3.inet
+
+ping so3.inet
+
+sudo systemctl disable --now systemd-resolved
+
+sudo unlink /etc/resolv.conf
+
+sudo nano /etc/resolv.conf
+
+Introduce las siguientes lineas:
+-------------------------------------------------
+# Samba server IP address
+nameserver 192.168.0.180
+
+# fallback resolver Quad9
+nameserver 9.9.9.9
+
+# Dominio principal de Samba
+search so3.inet
+-------------------------------------------------
+
+sudo chattr +i /etc/resolv.conf
+
+sudo apt-get update -y
+
+sudo apt-get install -y acl attr samba samba-dsdb-modules samba-vfs-modules smbclient winbind libpam-winbind libnss-winbind libpam-krb5 krb5-config krb5-user chrony net-tools
+
+Dentro del promp escribe lo siguiente:
+-------------------------------------------------
+SO3.inet
+
+so3.inet
+
+so3.inet
+-------------------------------------------------
+sudo nano /etc/krb5.conf
+
+Edita las siguientes lineas:
+-------------------------------------------------
+kdc= servidor.so3.inet
+admin_server= servidor.so3.inet
+-------------------------------------------------
+sudo systemctl disable --now smbd nmbd winbind
+
+sudo systemctl unmask samba-ad-dc
+
+sudo systemctl enable samba-ad-dc
+
+----------------------------------------------------------------------------------------
+
+configuracion
+
+sudo mv /etc/samba/smb.conf /etc/samba/smb.conf.copia
+
+sudo samba-tool domain provision --use-rfc2307 --interactive
+-------------------------------------------------
+Realm: SO3.inet
+
+Domain SO3-DOM
+
+enter
+
+enter
+
+dns forwarder: 9.9.9.9
+
+Contraseña para el administrator
+-------------------------------------------------
+
+sudo mv /etc/krb5.conf /etc/krb5.conf.original
+
+sudo cp /var/lib/samba/private/krb5.conf /etc/krb5.conf
+
+sudo systemctl start samba-ad-dc
+
+sudo systemctl status samba-ad-dc
+
+sudo chown root:_chrony /var/lib/samba/ntp_signd/
+
+sudo chmod 750 /var/lib/samba/ntp_signd/
+
+sudo nano /etc/chrony/chrony.conf
+-------------------------------------------------------------------------------------------
+bajamos abajo del todo
+
+# bind el servicio de chrony a la dirección IP del Samba AD.
+bindcmdaddress 192.168.0.180
+
+# Permite a los clientes de la red conectar al Chrony NTP server en este caso:
+allow 192.168.0.0/24
+
+# Especifica el directorio del ntpsigndsocket para el Samba AD.
+ntpsigndsocket /var/lib/samba/ntp_signd
+-------------------------------------------------------------------------------------------
+
+sudo systemctl restart chronyd
+
+sudo systemctl status chronyd
+
+host -t A so3.inet
+
+host -t SRV _kerberos._udp.so3.inet
+
+kinit administrator@SO3.INET
+
+klist
+
+sudo samba-tool user create Adrian
+
+sudo samba-tool user list
+
+-------------------------------------------------------------------------------------------
+
+Windows
+
+cambiar configuracion de red
+
+cambiar opciones de adaptador
+
+Clic derecho a ethernet0 y luego propiedades
+
+protocolo de intertnet V4
+
+dns preferido 192.168.0.180
+
+alternativo dns 9.9.9.9
+
+en powershell como admin
+
+Get-DnsClientServerAddress
+
+ping so3.inet
+
+Add-Computer -DomainName "so3.inet" -Restart
