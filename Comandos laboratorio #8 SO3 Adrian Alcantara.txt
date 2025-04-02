@@ -1,0 +1,122 @@
+Comandos Practica 1 laboratorio 8
+
+sudo apt install docker.io -y
+
+sudo docker --version
+
+sudo docker ps -a
+
+sudo docker images
+
+sudo docker pull nginx
+
+sudo docker images
+
+cd
+
+cd ..
+
+pwd
+
+sudo mkdir website
+
+cd website
+
+sudo nano index.html
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pagina Docker</title>
+    </head>
+    <body>
+        <p>Enrique De La Cruz</p>
+        <p>2024-0798</p>
+    </body>
+</html>
+
+sudo docker run -d -p 8888:80 -v /home/website:usr/share/nginx/html nginx
+
+sudo docker ps -a 
+
+http://127.0.0.1:8888)
+
+sudo docker stop id
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos Practica 2 laboratorio 8
+
+sudo docker pull portainer/portainer-ce
+
+sudo docker run -d -p 8088:80 -p 9000:9000 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
+
+127.0.0.1:9000
+
+sudo docker start id container creado en la practica anterior
+
+ir a la web
+
+sudo docker ps -a
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Comandos Practica 3 laboratorio 8
+
+sudo apt-get install ca-certificates curl gnupg lsb-release
+
+sudo mkdir -p /etc/apt/keyrings                            
+
+Añadir la clave GPG de Docker:
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+Descargar la ultima version de Docker Compose de manera ejecutable:
+
+sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+mkdir wordpress
+
+cd wordpress
+
+sudo nano docker-compose.yml
+
+version: '3.1'
+
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - wordpress_data:/var/www/html
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  wordpress_data:
+  db_data:
+
+networks:
+  wordpress_network:
+
+
+sudo docker-compose up -d
+
+127.0.0.1:8080
