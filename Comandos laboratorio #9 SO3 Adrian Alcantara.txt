@@ -1,0 +1,361 @@
+Instrucciones y comandos practica 1 laboratorio 9
+
+Instalacion  webmin:
+Agrega el repositorio de Webmin a la lista de fuentes de APT:
+echo "deb http://download.webmin.com/download/repository sarge contrib" | sudo tee /etc/apt/sources.list.d/webmin.list
+
+Descarga e instala la clave GPG de Webmin para verificar la autenticidad de los paquetes:
+wget -qO - http://www.webmin.com/jcameron-key.asc | sudo tee /etc/apt/trusted.gpg.d/webmin.asc
+sudo apt update
+sudo apt install webmin -y
+
+https://<IP_DEL_SERVIDOR>:10000
+
+Crear un usuario
+En Webmin, ve a System > Users and Groups.
+
+Haz clic en Create a new user.
+
+Rellena los campos:
+
+Username: Nombre del usuario.
+
+Real name: Nombre real.
+
+Password: Ingresa una contraseña o permite que se genere automáticamente.
+
+Shell: Selecciona /bin/bash si es un usuario normal.
+
+Primary group: users o crea uno nuevo.
+
+Haz clic en Create.
+
+Eliminar un usuario
+En System > Users and Groups, selecciona el usuario que deseas eliminar.
+
+Haz clic en Delete selected users.
+
+4. Gestión de servicios (Ejemplo con SSH)
+Iniciar, detener y reiniciar un servicio
+Ve a System > Bootup and Shutdown.
+
+Busca el servicio que deseas gestionar (ejemplo: ssh).
+
+Usa las opciones Start, Stop o Restart.
+
+5. Configuración de una IP estática en interfaces de red
+Desde Webmin
+Ve a Networking > Network Configuration > Network Interfaces.
+
+Selecciona la interfaz (eth0 o ens33 según tu sistema).
+
+Cambia Configuration de DHCP a Static.
+
+Ingresa los valores de:
+
+IP Address: Ejemplo: 192.168.1.100
+
+Netmask: Ejemplo: 255.255.255.0
+
+Gateway: Ejemplo: 192.168.1.1
+
+Guarda los cambios y aplica la configuración.
+
+6. Administración de software
+Instalar un paquete
+Ve a System > Software Packages.
+
+En Package from APT, ingresa el nombre del paquete (Ej: htop).
+
+Haz clic en Install.
+
+Actualizar todos los paquetes
+Desde Webmin:
+
+Ve a System > Software Package Updates.
+
+Selecciona los paquetes a actualizar y haz clic en Update selected packages.
+
+Eliminar un paquete
+Desde Webmin:
+
+En System > Software Packages, selecciona el paquete instalado.
+
+Haz clic en Remove selected packages.
+
+7. Gestión de archivos y directorios
+Explorar archivos
+Ve a Others > File Manager.
+
+Explora las carpetas y archivos del sistema.
+
+Editar un archivo
+Navega hasta el archivo deseado.
+
+Haz clic en Edit y realiza los cambios necesarios.
+
+Guarda el archivo.
+
+Eliminar un archivo
+Desde Webmin:
+
+Ve a File Manager.
+
+Selecciona el archivo y haz clic en Delete.
+
+Desde la terminal:
+
+8. Monitorización del sistema
+Desde Webmin
+Ve a System > System Information.
+
+Aquí puedes ver estadísticas de CPU, memoria, almacenamiento y carga del sistema.
+
+También puedes usar Others > Running Processes para ver los procesos activos.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 2 laboratorio 9
+
+sudo wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt update && sudo apt install terraform
+
+terraform
+
+cd(ir al directorio de tu usuario)
+
+sudo mkdir Adrian
+
+cd Adrian
+
+sudo nano Terraform.tf
+
+Pegar la configuracion del proveedor:
+-----------------------------------------------------------------------------------------
+terraform {
+  required_providers {
+    digitalocean = {
+      source  = "digitalocean/digitalocean"
+      version = "~> 2.0"
+    }
+  }
+}
+
+# Set the variable value in *.tfvars file
+# or using -var="do_token=..." CLI option
+variable "do_token" {}
+
+# Configure the DigitalOcean Provider
+provider "digitalocean" {
+  token = var.do_token
+}
+
+-----------------------------------------------------------------------------------------
+
+sudo terraform init
+
+sudo terraform validate
+
+Ir a DigitalOcean
+Api(new)
+Generate new token
+token name
+sin tiempo de expiracion
+full access
+
+
+sudo nano token.txt
+pegar el token en el archivo
+
+sudo terraform validate
+
+Ir a DigitalOcean
+settings
+security
+add ssh key
+ssh-keygen(en el servidor)
+cat ~/.ssh/id_rsa.pub
+copiar llave
+pegar la llave
+darle un nombre
+add ssh keygen
+
+sudo nano Terraform.tf
+pegar esto:
+
+-----------------------------------------------------------------------------------------
+# Create a new Web Droplet in the nyc2 region
+resource "digitalocean_droplet" "web" {
+  image   = "ubuntu-22-04-x64"
+  name    = "OS3vm"
+  region  = "nyc1"
+  size    = "s-1vcpu-1gb"
+  ssh_keys = ["llaves ssh"]
+}
+-----------------------------------------------------------------------------------------
+
+sudo terraform validate
+
+cat token.txt
+copiar token
+
+sudo terraform apply
+
+pega token 
+
+yes
+
+ssh root@ip de la maquina
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Comandos practica 3 laboratorio 9
+
+sudo apt install -y python3
+
+sudo apt install software-properties-common
+
+sudo apt install ansible
+
+vamos al adcliente Linux(DigitalOcean)
+ssh root@ip maquina DigitalOcean
+adduser ansible1
+usermod -aG sudo ansible1
+rsync --archive --chown=ansible1:ansible1 ~/.ssh /home/ansible1
+exit
+ssh ansible1@ip maquina DigitalOcean
+
+en el ansibe controller
+sudo mkdir /etc/ansible
+sudo nano /etc/ansible/hosts
+
+pegar:
+-------------------------------------------------------------
+[linux]
+Ip del Linux(DigitalOcean)
+
+[linux:vars]
+ansible_user=ansible1
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_become_password=ansible1
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+-------------------------------------------------------------
+
+ansible linux -m ping
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+al windows
+
+ir a configuracion
+ethernet
+red
+network profile
+privada
+
+ir al panel de control y desactivar el firewall
+
+Abrir powrshell como administrador y pegar lo siguiente:
+ 
+* Configura la política de ejecución de scripts en PowerShell para permitir scripts locales firmados y no firmados desde fuentes remotas.*
+
+Set-ExecutionPolicy RemoteSigned -Force
+
+Habilita PowerShell Remoting en el sistema para aceptar conexiones remotas.
+
+Enable-PSRemoting -Force
+
+Activa la autenticación básica para el servicio WinRM.
+
+Set-Item WSMan:\localhost\Service\Auth\Basic -Value $true
+
+Permite el tráfico sin cifrar en WinRM.
+
+Set-Item WSMan:\localhost\Service\AllowUnencrypted -Value $true
+ 
+Reinicia el servicio WinRM para aplicar cambios.
+
+Restart-Service WinRM
+ 
+Instala el módulo de PowerShell para gestionar actualizaciones de Windows.
+
+Install-Module -Name PSWindowsUpdate -Force
+
+Crea una regla de firewall para permitir tráfico en el puerto 5985 (HTTP para WinRM).
+
+New-NetFirewallRule -Name "WinRM HTTP" -Protocol TCP -LocalPort 5985 -Action Allow
+
+New-LocalUser -Name "ansible2" -Password (ConvertTo-SecureString "ansible2" -AsPlainText -Force) -FullName "Ansible User" -Description "Usuario Ansible"
+
+
+Add-LocalGroupMember -Group "Administradores" -Member "ansible2"   #####Si te da error cambia administradores por administrator si lo tienes en ingles#####
+
+winrm create winrm/config/Listener?Address=*+Transport=HTTP
+
+winrm enumerate winrm/config/listener
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+en el servidor
+
+
+sudo nano /etc/ansible/hosts
+
+pegar:
+---------------------------------------------------------
+[windows]
+ip del windows
+
+[windows:vars]
+ansible_user=ansible2
+ansible_password=ansible2
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore
+---------------------------------------------------------
+ansible windows -m win_ping
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 4 laboratorio 9
+
+ansible windows -i /etc/ansible/hosts -m win_copy -a "src=C:/Users/ansible2/Desktop/Ansible.txt dest=C:/Users/ansible2/Documents/ remote_src=yes"
+
+ansible linux -i /etc/ansible/hosts -m reboot --become
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Comandos practica 5 laboratorio 9
+
+sudo nano notepad++
+-------------------------------------------------------------------------------------------
+- name: Descargar e instalar Notepad++
+  hosts: windows
+  tasks:
+    - name: Descargar el instalador de Notepad++
+      win_get_url:
+        url: "https://github.com/notepad-plus-plus/notepad-plus-plus/releases/download/v8.4.6/npp.8.4.6.Installer.exe"
+        dest: "C:\\Users\\ansible2\\Downloads\\npp_installer.exe"
+    
+    - name: Ejecutar el instalador de Notepad++
+      win_shell: |
+        Start-Process -FilePath "C:\\Users\\ansible2\\Downloads\\npp_installer.exe" -ArgumentList "/S" -Wait
+      args:
+        executable: powershell
+-------------------------------------------------------------------------------------------
+ansible-playbook notepad++
+--------------------------------------------
+sudo nano LinuxReboot
+-----------------------------------------------------------------------------------
+- name: Actualizar los repositorios del sistema
+  hosts: linux
+  become: yes
+  tasks:
+    - name: Actualizar la lista de paquetes
+      apt:
+        update_cache: yes
+-----------------------------------------------------------------------------------
+ansible-playbook LinuxReboot
