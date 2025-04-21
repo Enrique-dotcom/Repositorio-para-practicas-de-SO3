@@ -62,16 +62,18 @@ sudo docker ps -a
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Comandos Practica 3 laboratorio 8
 
+sudo apt update -y
+
+Descargar las herramientas necesarias para la practica:
 sudo apt-get install ca-certificates curl gnupg lsb-release
 
+Crear un directorio para las vlaces GPG de Docker:
 sudo mkdir -p /etc/apt/keyrings                            
 
 Añadir la clave GPG de Docker:
-
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 Descargar la ultima version de Docker Compose de manera ejecutable:
-
 sudo curl -L "https://github.com/docker/compose/releases/download/$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*?(?=")')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 sudo chmod +x /usr/local/bin/docker-compose
