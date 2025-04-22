@@ -112,14 +112,12 @@ alert tcp any any -> $HOME_NET 80 (msg: "Trafico HTTP detectado"; sid: 100004; r
 
 --------------------------------------------
 
-Probar la configuracion:
-
+Validar configuracion configuracion:
 sudo snort -T -i ens33 -c /etc/snort/snort.conf
 
 --------------------------------------------
 
 Abre otra terminal y escribir el siguiente comando para ver el trafico:
-
 sudo tail -f /var/log/snort/snort.alert.fast
 
 --------------------------------------------
@@ -127,21 +125,16 @@ sudo tail -f /var/log/snort/snort.alert.fast
 Volmemos a la terminal de antes
 
 Activar el snort:
-
 sudo snort -i ens33 -c /etc/snort/snort.conf
 
-vamos a la otra maquina
-
-le hacemos ping
-
+Ir a la otra maquina
+Probar haciendo ping:
 ping ip
 
-entramos via ssh
-
+Entrar via ssh:
 ssh usuario@ip
 
-entramos via telnet por el puerto 21
-
+Entrar via telnet por el puerto 21:
 telnet ip 21
 
 para el http
