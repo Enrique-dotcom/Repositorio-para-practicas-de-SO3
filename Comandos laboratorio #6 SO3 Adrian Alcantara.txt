@@ -85,23 +85,23 @@ ponemos el rango de ip /24 en la promp
 
 sudo nano /etc/snort/snort.conf
 ---------------------------------------------
-editamos el ip var lo editamos que quede asi:
+Editar el ip var de la siguiente forma:
 
 ipvar HOME_NET rango que pusimos en la promp
 
-bajamos hasta que hayan muchos includes
+Ir hasta abajo en la parte de los includes
 
-ponemos 
+Poner
 
 include $RULE_PATH/local.rules
 
 --------------------------------------------
 
-vamos agregar reglas
+Agregar reglas:
 
 sudo nano /etc/snort/rules/local.rules
 
-agregamos lo siguiente:
+Agregar lo siguiente:
 
 --------------------------------------------
 
@@ -112,13 +112,13 @@ alert tcp any any -> $HOME_NET 80 (msg: "Trafico HTTP detectado"; sid: 100004; r
 
 --------------------------------------------
 
-Vamos a probar la configuracion
+Probar la configuracion:
 
 sudo snort -T -i ens33 -c /etc/snort/snort.conf
 
 --------------------------------------------
 
-abrimos otra terminal
+Abre otra terminal y escribir el siguiente comando para ver el trafico:
 
 sudo tail -f /var/log/snort/snort.alert.fast
 
@@ -126,7 +126,7 @@ sudo tail -f /var/log/snort/snort.alert.fast
 
 Volmemos a la terminal de antes
 
-activamos el snort
+Activar el snort:
 
 sudo snort -i ens33 -c /etc/snort/snort.conf
 
