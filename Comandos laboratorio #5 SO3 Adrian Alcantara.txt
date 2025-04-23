@@ -45,10 +45,13 @@ crontab -e
 
 Comandos practica 2 laboratorio 5
 
-sudo apt install pacemaker corosync -y
-sudo nano /etc/corosync/corosync.conf
-Copiar y pegar esto:
+En ambas maquinas:
 
+sudo apt install pacemaker corosync -y
+
+sudo nano /etc/corosync/corosync.conf
+
+Copiar y pegar esto:
 !!!!NODO 1!!!!
 # Please read the corosync.conf.5 manual page
 system {
@@ -84,14 +87,14 @@ quorum {
 
 nodelist {
         node {
-                ring0_addr: 10.10.10.10
-                name: enrique20240798-virtual-machine
+                ring0_addr: ip nodo 1
+                name: hostname nodo 1
                 nodeid: 1
         }
 
         node {
-                ring0_addr: 10.10.10.5
-                name: enrique20240798-virtual-machine
+                ring0_addr: ip nodo 2
+                name: hostname nodo 2
                 nodeid: 2
         }
 }
@@ -132,14 +135,14 @@ quorum {
 
 nodelist {
         node {
-                ring0_addr: 10.10.10.5
-                name: enrique20240798-virtual-machine 
+                ring0_addr: ip nodo 2
+                name: hostname nodo 2 
                 nodeid: 2  
         }
 
         node {
-                ring0_addr: 10.10.10.10
-                name: enrique20240798-virtual-machine
+                ring0_addr: ip nodo 1
+                name: hostname nodo 1
                 nodeid: 1 
         }
 }
