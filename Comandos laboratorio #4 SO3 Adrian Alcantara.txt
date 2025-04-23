@@ -199,13 +199,15 @@ Añadir impresora
 
 Ingresamos con cupsadmin y la contraseña
 
-Selecciona cups_pdf pdf printer
+Selecciona cups_pdf pdf (virtual pdf printer)
 
-Nombre que desea y compartir imoresora
+Nombre que desea y seleccionar compartir impresora
 
 Marca generic
 
-cups pdf printer no options
+Generic cups-pdf printer (no options) (en)
+
+add printer
 
 Impresoras
 
@@ -226,6 +228,8 @@ Seleccionar una impresora compartida por nombre
 Pegar la url
 
 Cambiar el https por http
+
+Selecciona Generic
 
 Regresar al navegador e ir a trabajos
 
