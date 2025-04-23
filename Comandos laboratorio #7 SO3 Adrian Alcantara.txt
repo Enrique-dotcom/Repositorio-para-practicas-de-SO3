@@ -114,7 +114,7 @@ hostname -f
 
 sudo nano /etc/hosts
 
-192.168.0.180 SO3-DOM SO3.inet
+ipDeLaMaquina SO3-DOM SO3.inet
 
 ping so3.inet
 
@@ -240,7 +240,7 @@ propiedades
 
 Usar las siguientes direcciones de servidor DNS:
 
-dns preferido 192.168.0.180
+dns preferido ipDeLaMaquina
 
 alternativo dns 9.9.9.9
 
