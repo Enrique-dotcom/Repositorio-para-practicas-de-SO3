@@ -1,16 +1,19 @@
 Comandos de practica 1 laboratorio 3
 
 sudo nano /etc/default/grub
-
+--------------------------------------------------------------------------------
+editar la linea grub_timeout=0 para que quede asi:
+grub_timeout=20
+--------------------------------------------------------------------------------
 sudo update-grub
 
-reboot
+sudo reboot
 
 reboot+shift para abrir el menu de grub
 
 advanced options for ubuntu
 
-recovery mode
+Ubuntu, with linux 6.8.0-52-generic (recovery mode) (segunda opcion)
 
 root
 
