@@ -1,10 +1,12 @@
 Comandos practica 1 laboratorio 7
 
-(Maquina Host)
+!!!! MAQUINA HOST !!!!
 
 sudo apt install nfs-kernel-server -y
 
 sudo mkdir /mnt/OS3
+
+cd /mnt/OS3
 
 sudo touch archivo{1..100}.txt
 
@@ -12,40 +14,37 @@ sudo chown nobody:nogroup /mnt/OS3
 
 sudo chmod 755 /mnt/OS3
 
-cd /mnt/OS3
-
-sudo touch adrian{1..100}.txt
-
 sudo nano /etc/exports
+-------------------------------------------------------------
+Pegar:
 
-pegar:
-
-/mnt/OS3 ip cliente(rw,sync,no_subtree_check)
+/mnt/OS3 ipMaquinaCliente(rw,sync,no_subtree_check)
+-------------------------------------------------------------
 
 sudo exportfs -a
 
 sudo systemctl restart nfs-kernel-server
-
 -------------------------------------------------
 
-(Maquina cliente)
+!!!! MAQUINA CLIENTE !!!!
 
 sudo apt install nfs-common
 
 sudo mkdir /var/OS3
 
 sudo nano /etc/fstab
-
+-----------------------------------------------------------
 pegar:
 
-ip servidor:/mnt/OS3 /var/OS3 nfs defaults 0 0
-
-sudo mount ip servidor:/mnt/OS3
-
-sudo reboot
+ipMaquinaHost:/mnt/OS3 /var/OS3 nfs defaults 0 0
+-----------------------------------------------------------
+sudo mount ipMaquinaHost:/mnt/OS3
 
 cd /var/OS3
 
+ls
+
+sudo reboot
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Comandos practica 2 laboratorio 7
