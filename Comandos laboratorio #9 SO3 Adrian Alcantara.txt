@@ -336,7 +336,7 @@ ansible windows -m win_ping
 
 Comandos practica 4 laboratorio 9
 
-ansible windows -i /etc/ansible/hosts -m win_copy -a "src=C:/Users/ansible2/Desktop/Ansible.txt dest=C:/Users/ansible2/Documents/ remote_src=yes"
+ansible windows -i /etc/ansible/hosts -m win_copy -a "src=C:/Users/ansible2/Desktop/archivo.txt dest=C:/Users/ansible2/Documents/ remote_src=yes"
 
 ansible linux -i /etc/ansible/hosts -m reboot --become
 
