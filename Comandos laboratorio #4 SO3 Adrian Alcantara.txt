@@ -1,5 +1,21 @@
 Comandos practica 1 laboratorio 4
 
+sudo apt install apache2
+
+cd /var/www/html
+
+ls
+
+ifconfig
+
+sudo mkdir nombreDirectorio.com
+
+cd nombreDirectorio.com
+
+sudo nano index.html
+
+pegar lo siguiente:
+-----------------------------------------------------------------------------
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,7 +25,42 @@ Comandos practica 1 laboratorio 4
 (Cuerpo o texto que tendra la pagina)
     </body>
 </html>
+-----------------------------------------------------------------------------
 
+cd
+
+cd /etc/apache2/sites-available
+
+ls
+
+sudo cp 000-default.conf nombreArchivo.conf
+
+sudo nano prueba.conf
+--------------------------------------------------------------------------
+Editar la linea DocumentRoot de la siguiente manera:
+
+DocumentRoot /var/www/html/nombreDirectorio.com/
+--------------------------------------------------------------------------
+cd
+
+sudo a2ensite prueba.conf
+
+sudo a2dissite 000-default.conf
+
+sudo systemctl reload apache2
+
+Entrar a la pagina web con la ip de tu maquina
+----------------------------------------------------------------------------------------------
+
+cd /var/www/html
+
+ls
+
+sudo mkdir nombreDirectorio.com
+
+cd nombreDirectorio.com
+
+sudo nano index.html
 
 <!DOCTYPE html>
 <html>
@@ -23,40 +74,37 @@ Comandos practica 1 laboratorio 4
     </body>
 </html>
 
-sudo apt install apache2
-cd /var/www/html/
-ls
-ifconfig
-sudo mkdir prueba.com
-cd prueba.com
-sudo nano index.html
 cd
-cd /etc/apache2/sites-available
-ls
-sudo cp 000-default.conf prueba.conf
-sudo nano prueba.conf
-DocumentRoot /var/www/html/prueba.com/
-cd
-sudo a2ensite prueba.conf
-sudo a2dissite 000-default.conf
-sudo systemctl reload apache2
 
-cd /var/www/html
-ls
-sudo mkdir misdatos.com
-cd misdatos.com
-sudo nano index.html
-cd
 cd /etc/apache2/sites-available/
+
 ls
-sudo cp prueba.conf misdatos.conf
-sudo nano misdatos.conf
-DocumentRoot /var/www/html/misdatos.com/
-cd ..
+
+sudo cp nombreArchivo.conf nombreArchivo.conf
+
 ls
-sudo nano ports.conf
+
+sudo nano nombreArchivo.conf
+-------------------------------------------------------------------------------
+Pegar:
+
 Listen 8080
-sudo a2ensite misdatos.conf
+
+DocumentRoot /var/www/html/nombreDirectorio.com/
+-------------------------------------------------------------------------------
+
+cd ..
+
+ls
+
+sudo nano ports.conf
+-------------------------------------------------------------------------------
+Pegar:
+
+Listen 8080
+
+sudo a2ensite nombreArchivo.conf
+
 systemctl reload apache2
 
 ---------------------------------------------------------------------------------------------------------------------------------------
