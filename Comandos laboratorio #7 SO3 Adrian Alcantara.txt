@@ -61,15 +61,15 @@ cd /srv/samba_share
 
 sudo touch Adrian{1..100}.txt
 
-sudo groupadd smbgroup
+sudo groupadd nombreDelGrupo
 
-sudo useradd -M -s /sbin/nologin sambauser
+sudo useradd -M -s /sbin/nologin nombreDelUsuario
 
-sudo usermod -aG smbgroup sambauser
+sudo usermod -aG nombreDelGrupo nombreDelUsuario
 
-sudo smbpasswd -a sambauser
+sudo smbpasswd -a nombreDelUsuario
 
-sudo chown -R sambauser:smbgroup  /srv/samba_share/
+sudo chown -R nombreDelUsuario:nombreDelGrupo  /srv/samba_share/
 
 sudo chmod 770 /srv/samba_share/
 
@@ -81,7 +81,7 @@ pegar:
    path = /srv/samba_share
    read only = no
    browsable = yes
-   valid users = sambauser
+   valid users = nombreDelUsuario
    create mask = 0660
    directory mask = 0770
    guest ok = no
@@ -103,10 +103,7 @@ La unidad que prefieras
 
 \\192.168.0.180\share
 
-En carpeta la carpeta compartida de samba
-
 Usuario y contraseña de samba
-
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Comandos practica 3 laboratorio 7 
