@@ -163,7 +163,7 @@ sudo crm configure
 
 Pegar lo siguiente:
 primitive FloatingIP ocf:heartbeat:IPaddr2 \
-    params ip=192.168.0.100 cidr_netmask=24 \
+    params ip=direccion ip cidr_netmask=mascara \
     op start timeout=20 \
     op stop timeout=20 \
     op monitor interval=10 timeout=5
