@@ -1,24 +1,44 @@
 Comandos practica 1 laboratorio 5
+---------------------------------------------------------------------------
+Proceso para agregar llaves ssh entre las maquinas:
 
 ssh-keygen
+
 cd rutadondeseguardolallave
+
 ls
+
 ssh-copy-id usuario@ipdelusuario
+
 ssh usuario@ipdelusuario
+
 exit
+----------------------------------------------------------------------------
+
 cd Desktop
+
 mkdir nombrecarpeta
+
 cd nombrecarpeta
+
 touch nombrearchivo{1..100}.txt
+
 ls
+
 rsync -avz /home/ubuntu/Desktop/nombrecarpeta usuario@ipdelusuario:/home/enrique20240798/Desktop/
 
 Copia el comando escrito anteriormente 
+
 cd
+
 sudo nano nombrescript.sh
+
 pega el comando copiado
+
 sudo chmod +x nombrescript.sh
+
 crontab -e
+
 * * * * * /bin/bash /home/enrique20240798/nombrescript.sh
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------
