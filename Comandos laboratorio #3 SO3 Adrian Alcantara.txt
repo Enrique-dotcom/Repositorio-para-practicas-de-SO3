@@ -29,21 +29,21 @@ reboot
 
 Comandos de practica 2 laboratorio 3
 
-sudo nano script1.sh
+sudo nano nombreScript.sh
 
 #!/bin/bash
 
-ORIGEN="/home/enrique20240798/"
+ORIGEN="/home/usuario/"
 FECHA=$(date +"%d-%m-%Y:%H:%M")
 copia_enrique="backup-$FECHA.tar.gz"
 tar -czvf "$copia_enrique" "$ORIGEN"
-echo "Backup realizado con exito: $copia_enrique"
+echo "Backup realizado con exito: copia_enrique"
 
-sudo chmod +x scriptdepractica.sh
+sudo chmod +x nombreScript.sh
 
 ./scriptdepractica.sh
-
-sudo nano scriptdepractica2.sh
+---------------------------------------------------------------------------
+sudo nano nombreScript.sh
 
 #!/bin/bash
 
@@ -53,7 +53,7 @@ RUTA_ARCHIVO="/home/enrique20240798/Desktop/$NOMBRE_ARCHIVO.txt"
 ifconfig > "$RUTA_ARCHIVO"
 echo "El resultado de ifconfig ha sido guardado en: $RUTA_ARCHIVO"
 
-sudo chmod +x scriptdepractica2.sh
+sudo chmod +x nombreScript.sh
 
 ./scriptdepractica2.sh
 
@@ -65,7 +65,7 @@ sudo apt install openssh-server
 
 sudo systemctl status ssh
 
-sudo systemctl enable ss (en caso de que no este activo al iniciarlo)
+sudo systemctl enable ssh (en caso de que no este activo al instalarlo)
 
 ssh usuario@ip
 
@@ -78,12 +78,14 @@ touch authorized_keys
 chmod 600 al archivo y a la carpeta
 
 exit
+--------------------------------------------------------------------------------------------
+!!!! WINDOWS !!!!
 
 ssh-keygen
 
 Copiar ruta generada por el commando anterior y pegarla en el explorador de archivos
 
-Abrir el doc Publisher con el notepd
+Abrir el doc Publisher con el notepad
 
 copier la clave generada que esta dentro el Publisher
 
