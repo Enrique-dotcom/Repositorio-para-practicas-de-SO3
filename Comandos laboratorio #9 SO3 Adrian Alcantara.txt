@@ -117,12 +117,15 @@ También puedes usar Others > Running Processes para ver los procesos activos.
 
 Comandos practica 2 laboratorio 9
 
+------------------------------------------------------------------------------------------
+Instalacion de dependencias de Terraform:
+
 sudo wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 
 sudo echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 
 sudo apt update && sudo apt install terraform
-
+------------------------------------------------------------------------------------------
 terraform
 
 cd(ir al directorio de tu usuario)
@@ -159,13 +162,15 @@ sudo terraform init
 
 sudo terraform validate
 
+------------------------------------------------------------------------------------------
+Creacion de token API:
 Ir a DigitalOcean
 Api(new)
 Generate new token
 token name
 sin tiempo de expiracion
 full access
-
+------------------------------------------------------------------------------------------
 
 sudo nano token.txt
 pegar el token en el archivo
@@ -218,16 +223,17 @@ sudo apt install -y python3
 sudo apt install software-properties-common
 
 sudo apt install ansible
-
+------------------------------------------------------------------------------------------
 vamos al adcliente Linux(DigitalOcean)
 ssh root@ip maquina DigitalOcean
 adduser ansible1
 usermod -aG sudo ansible1
 rsync --archive --chown=ansible1:ansible1 ~/.ssh /home/ansible1
 exit
+------------------------------------------------------------------------------------------
 ssh ansible1@ip maquina DigitalOcean
 
-en el ansibe controller
+en el ansibe controller(maquina host)
 sudo mkdir /etc/ansible
 sudo nano /etc/ansible/hosts
 
@@ -260,46 +266,54 @@ ir al panel de control y desactivar el firewall
 
 Abrir powrshell como administrador y pegar lo siguiente:
  
-* Configura la política de ejecución de scripts en PowerShell para permitir scripts locales firmados y no firmados desde fuentes remotas.*
+* Configura la política de ejecución de scripts en PowerShell para permitir scripts locales firmados y no firmados desde fuentes remotas.*:
 
 Set-ExecutionPolicy RemoteSigned -Force
 
-Habilita PowerShell Remoting en el sistema para aceptar conexiones remotas.
+Habilita PowerShell Remoting en el sistema para aceptar conexiones remotas:
 
 Enable-PSRemoting -Force
 
-Activa la autenticación básica para el servicio WinRM.
+Activa la autenticación básica para el servicio WinRM:
 
 Set-Item WSMan:\localhost\Service\Auth\Basic -Value $true
 
-Permite el tráfico sin cifrar en WinRM.
+Permite el tráfico sin cifrar en WinRM:
 
 Set-Item WSMan:\localhost\Service\AllowUnencrypted -Value $true
  
-Reinicia el servicio WinRM para aplicar cambios.
+Reinicia el servicio WinRM para aplicar cambios:
 
 Restart-Service WinRM
  
-Instala el módulo de PowerShell para gestionar actualizaciones de Windows.
+Instala el módulo de PowerShell para gestionar actualizaciones de Windows:
 
 Install-Module -Name PSWindowsUpdate -Force
 
-Crea una regla de firewall para permitir tráfico en el puerto 5985 (HTTP para WinRM).
+Crea una regla de firewall para permitir tráfico en el puerto 5985 (HTTP para WinRM):
 
 New-NetFirewallRule -Name "WinRM HTTP" -Protocol TCP -LocalPort 5985 -Action Allow
 
-New-LocalUser -Name "ansible2" -Password (ConvertTo-SecureString "ansible2" -AsPlainText -Force) -FullName "Ansible User" -Description "Usuario Ansible"
+Agregar usuario ansible:
 
+New-LocalUser -Name "ansible2" -Password (ConvertTo-SecureString "ansible2" -AsPlainText -Force) 
+
+Esta parte es opcional, en caso de usarla debe hacerlo junto con el comando escrito anteriormente:
+
+-FullName "Ansible User" -Description "Usuario Ansible"
+
+Agregar el usuario al grupo de administradores:
 
 Add-LocalGroupMember -Group "Administradores" -Member "ansible2"   #####Si te da error cambia administradores por administrator si lo tienes en ingles#####
 
-winrm create winrm/config/Listener?Address=*+Transport=HTTP
+winrm create winrm/config/Listener?Address=*+Transport=HTTP (Muchas veces este archivo ya viene creado, aun asi puedes utilizarlo por seguridad ya que si el archivo ya esta creado simplemente te lo notificara)
+
+Enumerar las configuraciones hechas:
 
 winrm enumerate winrm/config/listener
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-en el servidor
-
+en el ansible controller(maquina host):
 
 sudo nano /etc/ansible/hosts
 
