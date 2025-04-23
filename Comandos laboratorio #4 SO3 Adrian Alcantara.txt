@@ -112,28 +112,63 @@ systemctl reload apache2
 Comandos practica 2 laboratorio 4
 
 sudo apt install postfix -y
+--------------------------------------------------------------------------------------------
+Informacion promp:
+Internet Site
+System mail name: Nombre del servidor
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 sudo dpkg-reconfigure postfix
-sudo systemctl restart postfix
-sudo apt install mailutils -y
-sudo nano /etc/postfix/sasl/sasl_passwd
-[smtp.gmail.com]:587 (correo):(contraseña sin espacios)
-sudo postmap /etc/postfix/sasl/sasl_passwd
-ls /etc/postfix/sasl/
-sudo chmod 600 /etc/postfix/sasl/sasl_passwd
-sudo chmod 600 /etc/postfix/sasl/sasl_passwd.db
-sudo nano /etc/postfix/main.conf 
 
-pega la siguiente informacion dentro del archivo de configuracion de postfix:
+promp:
+internet site
+nombre del servidor
+correo que usara postfix
+other destinations to accept mail: enter
+ipv4 cuando sea necesaria
+enter
+enter
+enter
+enter
+--------------------------------------------------------------------------------------------
+
+sudo systemctl restart postfix
+
+sudo apt install mailutils -y
+
+sudo nano /etc/postfix/sasl/sasl_passwd
+
+[smtp.gmail.com]:587 (correo):(contraseña sin espacios)
+
+sudo postmap /etc/postfix/sasl/sasl_passwd
+
+ls /etc/postfix/sasl/
+
+sudo chmod 600 /etc/postfix/sasl/sasl_passwd
+
+sudo chmod 600 /etc/postfix/sasl/sasl_passwd.db
+
+sudo nano /etc/postfix/main.cf
+
+-----------------------------------------------------------------------------------------
+Editar la siguiente linea para que quede de la siguiente manera:
+relayhost = [smtp.gmail.com]:587
+
+pega la siguiente informacion dentro del archivo de configuracion de postfix al final:
 smtp_sasl_auth_enable = yes
 smtp_sasl_security_options = noanonymous
 smtp_sasl_password_maps = hash:/etc/postfix/sasl/sasl_passwd
 smtp_tls_security_level = encrypt
 smtp_tls_CAfile = /etc/ssl/certs/ca-certificates.crt
-
+-----------------------------------------------------------------------------------------
 sudo systemctl restart postfix
+
 sudo systemctl enable postfix
+
 sudo systemctl start postfix
+
 echo "Cuerpo del correo" | mail -s "Asunto del correo" (Correo de destino)
+
 sudo postqueue -p
 
 ---------------------------------------------------------------------------------------------------------------------------------------
