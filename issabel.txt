@@ -1,0 +1,8 @@
+sudo yum update
+yum install wget
+wget http://repo.issabel.org/issabel5-netinstall.sh
+chmod 770  script
+./script
+version 16
+solo elegir la primera opcion para evitar que bloqueen el servidor
+sudo systemctl stop fail2ban
