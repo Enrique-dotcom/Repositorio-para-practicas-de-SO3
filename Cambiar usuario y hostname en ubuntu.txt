@@ -1,0 +1,26 @@
+sudo gedit /etc/passwd
+
+Cambiar nombre de usuario (opcional)
+---------------------------------------------------------------------------------------------
+ir a la linea que contenga tu nombre de usuario
+
+(el primer nombre es el que aparece en la terminal, el Segundo es el nombre de la cuenta a la hora de iniciar sesion)
+---------------------------------------------------------------------------------------------
+
+Cambiar nombre de la terminal
+---------------------------------------------------------------------------------------------
+sudo adduser usuariotemporal
+
+sudo adduser usuariotemporal sudo
+
+inicia sesion con el usuariotemporal
+
+sudo usermod -l nuevoNombre -m -d /home/nuevoNombre antiguoNombre
+
+sudo deluser usuariotemporal
+---------------------------------------------------------------------------------------------
+iniciar sesion en el usuario cambiado
+
+sudo hostnamectl set-hostname nuevonombre
+
+sudo nano /etc/hosts
